@@ -51,7 +51,7 @@ func main() {
 	}
 
 	if err := network.CheckInternetConnection(); err != nil {
-		log.Fatalf("Failed to initialize environment: %v", err)
+		log.Fatalf("Failed to establish an internet connection: %v", err)
 	}
 
 	chromeCtx, cancelChrome, cancelExecAllocator, err := browser.GetChromeContext()
