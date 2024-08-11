@@ -10,7 +10,7 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 
 	"crawl/deepl/utils/browser"
-	"crawl/deepl/utils/clipboard"
+	"crawl/deepl/utils/cliargs"
 	"crawl/deepl/utils/network"
 	"crawl/deepl/utils/telegrambot"
 	"crawl/deepl/utils/url"
@@ -41,19 +41,26 @@ type TelegramBot struct {
 func main() {
 	totalExecTime := time.Now()
 
+	toBeTranslatedPhrases, err := cliargs.FilterNonEmptyArgs()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	if err := network.CheckInternetConnection(); err != nil {
 		log.Fatalf("Failed to initialize environment: %v", err)
-		return
 	}
-	chromeCtx, cancelChrome, cancelExecAllocator := browser.GetChromeContext()
+
+	chromeCtx, cancelChrome, cancelExecAllocator, err := browser.GetChromeContext()
+	if err != nil {
+		log.Fatalf("Failed to initialize Chrome context: %v", err)
+	}
 	defer cancelExecAllocator()
 	defer cancelChrome()
 
-	var toBeTranslatedPhrases []string = clipboard.GetTextFromClipboard()
-
 	bot, chatID, err := telegrambot.SetupTelegramBot()
 	if err != nil {
-		log.Printf("Failed to setup Telegram bot: %v", err)
+		log.Printf("Failed to initialize Telegram bot: %v", err)
+		return // the program should continue without the telegram sending funcionality, that why we do log abort here
 	}
 
 	var telegramBot *TelegramBot

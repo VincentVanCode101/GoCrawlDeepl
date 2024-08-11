@@ -1,21 +1,13 @@
 services:
-  goCrawlDeepl:
+  goCrawlDeeplDev:
     container_name: goCrawlDevtainer
     image: crawl-deepl:dev
-    cap_add:
-      - SYS_ADMIN
     build: 
       context: .
       target: dev
-      args:
-        USER_ID: ${USER_ID}
-        GROUP_ID: ${GROUP_ID}
-        USERNAME: ${USERNAME}
     volumes:
       - ./app:/usr/src/app
-      - /tmp/.X11-unix:/tmp/.X11-unix:ro
     environment:
       BOT_TOKEN: ${BOT_TOKEN}
       CHAT_ID: ${CHAT_ID}
-      DISPLAY: ${DISPLAY}
     entrypoint: ["tail", "-f", "/dev/null"]
