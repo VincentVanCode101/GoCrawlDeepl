@@ -44,6 +44,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to retrieve languages from environment: %v", err)
 	}
+
 	toBeTranslatedPhrases, err := cliargs.FilterNonEmptyArgs()
 	if err != nil {
 		log.Fatal(err)
@@ -63,7 +64,7 @@ func main() {
 	bot, chatID, err := telegrambot.SetupTelegramBot()
 	if err != nil {
 		log.Printf("Failed to initialize Telegram bot: %v", err)
-		return // the program should continue without the telegram sending funcionality, that why we do log abort here
+		return // the program should continue without the telegram-sending funcionality, thats why we just log and not abort here
 	}
 
 	var telegramBot *TelegramBot
