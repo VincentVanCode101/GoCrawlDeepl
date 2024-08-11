@@ -5,7 +5,7 @@
 
 ## Current Setup
 ### How It Works
-- **Starting the application**: The application is run in a [docker container](#docker-setup), when starting it, the current clipboard-contents is retrieved and passed as an argument which is to be translated
+- **Starting the application**: The application is run in a [docker container](#docker-setup), when starting it the current clipboard-contents is retrieved and passed as an argument which is to be translated
 - **Initialization**: The application first checks for an active internet connection.
 - **Chrome Context**: A Chrome context is created to allow headless browsing.
 - **Translation**: The text is translated by navigating to the Deepl website and extracting the translated text using Chromedp.
