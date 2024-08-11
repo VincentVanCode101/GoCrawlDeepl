@@ -11,6 +11,7 @@ import (
 
 	"crawl/deepl/utils/browser"
 	"crawl/deepl/utils/cliargs"
+	"crawl/deepl/utils/envutil"
 	"crawl/deepl/utils/network"
 	"crawl/deepl/utils/telegrambot"
 	"crawl/deepl/utils/url"
@@ -20,10 +21,8 @@ import (
 )
 
 const (
-	baseURL  = "https://www.deepl.com/en/translator#"
-	xpath    = `//*[@id="textareasContainer"]/div[3]/section/div[1]/d-textarea/div/p/span`
-	fromLang = "en"
-	toLang   = "de"
+	baseURL = "https://www.deepl.com/en/translator#"
+	xpath   = `//*[@id="textareasContainer"]/div[3]/section/div[1]/d-textarea/div/p/span`
 )
 
 // Translation holds the phrase to be translated along with its translations.
@@ -41,6 +40,10 @@ type TelegramBot struct {
 func main() {
 	totalExecTime := time.Now()
 
+	fromLang, toLang, err := envutil.GetLanguages()
+	if err != nil {
+		log.Fatalf("Failed to retrieve languages from environment: %v", err)
+	}
 	toBeTranslatedPhrases, err := cliargs.FilterNonEmptyArgs()
 	if err != nil {
 		log.Fatal(err)
@@ -70,13 +73,14 @@ func main() {
 
 	fmt.Printf("Amount of unrelated words to translate %d: %s\n", len(toBeTranslatedPhrases), strings.Join(toBeTranslatedPhrases, ", "))
 	for _, toBeTranslatedPhrase := range toBeTranslatedPhrases {
-		handleTranslation(chromeCtx, toBeTranslatedPhrase, telegramBot)
+		handleTranslation(chromeCtx, toBeTranslatedPhrase, fromLang, toLang, telegramBot)
 	}
 
 	fmt.Printf("Total execution time of the program: %v\n\n", time.Since(totalExecTime))
 }
 
-func handleTranslation(chromeCtx context.Context, toBeTranslatedPhrase string, telegrambot *TelegramBot) {
+func handleTranslation(chromeCtx context.Context, toBeTranslatedPhrase string, fromLang string, toLang string, telegrambot *TelegramBot) {
+
 	startTime := time.Now()
 
 	translation := Translation{
