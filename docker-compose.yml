@@ -1,0 +1,7 @@
+services:
+  goCrawlDeeplApp:
+    container_name: goCrawlApp
+    image: crawl-deepl:app
+    build: 
+      context: .
+      target: run-app

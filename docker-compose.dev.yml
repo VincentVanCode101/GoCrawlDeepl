@@ -1,0 +1,13 @@
+services:
+  goCrawlDeeplDev:
+    container_name: goCrawlDevtainer
+    image: crawl-deepl:dev
+    build: 
+      context: .
+      target: dev
+    volumes:
+      - ./app:/usr/src/app
+    environment:
+      BOT_TOKEN: ${BOT_TOKEN}
+      CHAT_ID: ${CHAT_ID}
+    entrypoint: ["tail", "-f", "/dev/null"]
