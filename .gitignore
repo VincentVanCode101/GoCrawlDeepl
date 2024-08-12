@@ -1,4 +1,5 @@
 .env
 
-app/test/coverage
-app_for_test_display/coverage
+# coverage/*
+/app/test/coverage/*
+!/app/test/coverage/.gitignore
