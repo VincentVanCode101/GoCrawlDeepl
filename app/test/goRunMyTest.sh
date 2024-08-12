@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
-go test .././... -coverprofile=test.out
+mkdir -p coverage
 
-go tool cover -html=./test.out -o coverage/coverage.html
+go test .././... -coverprofile=coverage/test.out
+
+go tool cover -html=./coverage/test.out -o coverage/coverage.html
