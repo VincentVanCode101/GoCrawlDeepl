@@ -13,7 +13,7 @@ services:
     entrypoint: ["tail", "-f", "/dev/null"]
 
   webServer:
-    container_name: webServerContainer
+    container_name: webServerDevtainer
     image: crawl-deepl-test-display-server:dev
     build:
       context: ./app_for_test_display

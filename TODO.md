@@ -1,4 +1,5 @@
 - write unit-tests
 - store already translated words and look them up before scraping deepl for a word that  has been translated before
 - add a queue for words so when in the middle of the translation an error occurs, the not translated words are processed the next time the program is ran
+- add running of tests into Dockerfile
 - add ci pipeline for automated tests?

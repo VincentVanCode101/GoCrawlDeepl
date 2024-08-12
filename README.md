@@ -73,7 +73,7 @@ CHAT_ID=
 ### Docker Setup
 
 #### Development Environment
-- The development environment is defined in `docker-compose.dev.yml` and starts a container named `goCrawlDevtainer`.
+- The development environment is defined in `docker-compose.dev.yml` and starts a container named `goCrawlDevtainer` and a container named `webServerDevtainer`.
 
 #### Production Environment
 - The production environment is defined in `docker-compose.yml` and starts a container named `goCrawlApp`.
@@ -92,7 +92,20 @@ docker compose -f docker-compose.dev.yml up
 docker exec -it goCrawlDevtainer bash
 ```
 
-##### Run the Application:
+### Development - Testing
+- To run the unit-tests manualy:
+```bash
+docker exec -it goCrawlDevtainer bash
+cd test
+./goRunMyTest.sh
+```
+aftert that? Go visit 
+```bash
+localhost:8080
+```
+ where the `webServerDevtainer` has spun up a simple webserver, serving the current test coverages
+
+### Development - Run the Application:
 Inside the container, run one of the following commands to start the translation:
 ```bash
 go run main.go "word to translate"
@@ -111,5 +124,3 @@ or
 ./run.sh
 ```
 The run script will fetch the content of your clip board and run its translation.
-
-#### More about the application
