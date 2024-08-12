@@ -109,12 +109,12 @@ func formatTranslation(input string, translations []string) string {
 func outputTranslation(translation Translation, telegramBot *TelegramBot) {
 	text := formatTranslation(translation.toBeTranslatedPhrase, translation.translatedPhrases)
 
-	if telegramBot != nil {
-		msg := tgbotapi.NewMessage(telegramBot.chatID, text)
-		if _, err := telegramBot.bot.Send(msg); err != nil {
-			log.Printf("Failed to send message via Telegram bot: %v", err)
-		}
-	}
+	// if telegramBot != nil {
+	// 	msg := tgbotapi.NewMessage(telegramBot.chatID, text)
+	// 	if _, err := telegramBot.bot.Send(msg); err != nil {
+	// 		log.Printf("Failed to send message via Telegram bot: %v", err)
+	// 	}
+	// }
 	fmt.Println("---------------------------------")
 	fmt.Println(text)
 	fmt.Println("---------------------------------")

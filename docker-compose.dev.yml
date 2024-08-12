@@ -4,10 +4,22 @@ services:
     image: crawl-deepl:dev
     build: 
       context: .
-      target: dev
+      target: build
     volumes:
       - ./app:/usr/src/app
     environment:
       BOT_TOKEN: ${BOT_TOKEN}
       CHAT_ID: ${CHAT_ID}
     entrypoint: ["tail", "-f", "/dev/null"]
+
+  webServer:
+    container_name: webServerContainer
+    image: crawl-deepl-test-display-server:dev
+    build:
+      context: ./app_for_test_display
+    volumes:
+      - ./app/test/coverage/:/coverage
+    ports:
+      - 8080:8080
+    environment:
+      PORT: 8080
