@@ -15,9 +15,9 @@ func TestBuildDeeplURL(t *testing.T) {
 		{
 			baseURL:           "https://www.deepl.com/en/translator#",
 			fromLang:          "en",
-			toLang:            "de",
+			toLang:            "fr",
 			phraseToTranslate: "Hello, world!",
-			expected:          "https://www.deepl.com/en/translator#en/de/Hello%2C%20world%21",
+			expected:          "https://www.deepl.com/en/translator#en/fr/Hello%2C%20world%21",
 		},
 		{
 			baseURL:           "https://www.deepl.com/en/translator#",
@@ -29,9 +29,9 @@ func TestBuildDeeplURL(t *testing.T) {
 		{
 			baseURL:           "https://www.deepl.com/en/translator#",
 			fromLang:          "en",
-			toLang:            "de",
+			toLang:            "fr",
 			phraseToTranslate: "pasta+scrambled eggs=yummy",
-			expected:          "https://www.deepl.com/en/translator#en/de/pasta%2Bscrambled%20eggs%3Dyummy",
+			expected:          "https://www.deepl.com/en/translator#en/fr/pasta%2Bscrambled%20eggs%3Dyummy",
 		},
 	}
 
