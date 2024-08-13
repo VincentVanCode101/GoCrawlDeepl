@@ -2,6 +2,8 @@
 - The `crawl/deepl` project is a Go-based application (`go 1.22.0`) designed to translate the contents of your current clipboard-storage using Deepl's web interface from [your desired language to another desired language](#setup-desired-languages-in-an-env-file) and optionally send the translations via a [Telegram bot](#setup-telegram-bot).
 - The application leverages Docker to ensure a consistent and isolated environment for development and execution.
 - It serves as a project for me to learn the Golang programming language. Feel free to give feedback or open pull requests.
+- This app only works as intended if you have xclip installed [look here](#requirements), which mostly only will be linux
+    - To run it on MacOS or Windows [have a look at the stuff here](#macos-and-windows)
 
 ## Current Setup
 ### How It Works
@@ -136,9 +138,19 @@ Distributed under the terms of the GNU GPL
 
 OS: Ubuntu 22.04.4 LTS x86_64
 
-- idk if xclip if available on windows
-- idk if xclip if available on MacOS, I think it can be installed... i could just change the `run.sh` and remove the xclip-call, but I do not want to because my i3wm bind command would get cluttered ;)
-... okay i changed my mind and will do it
+# MacOS and Windows
+- When not running this on linux but MacOS or Windows the functionality differs slightly
+- You will not be able to just translate your clipboard contents
+- On MacOS you will have to call
+```bash
+./runWithoutXclip.sh "word to translate"
+```
+(this assumes you have no xclip installed, otherwise you can just call `./run.sh` and your clipboard contents will be translated)
+- On Windows you will have to call
+```bash
+runWithOutXclip.bat "word to translate"
+```
+this bat-script is written by Chat-GPT since I have to clue amount .bat scripts and no way of testing them (just get yourself a unix-based OS and be happy)
 
 
 # Note for future Chris that still uses i3:
