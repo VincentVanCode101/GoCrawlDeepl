@@ -1,8 +1,28 @@
-- write unit-tests
+### FUNCTIONALITY:
 - store already translated words and look them up before scraping deepl for a word that  has been translated before
 - extract XPath into seperate file becaus its likly to change from time to time
 - extract ```less common``` words and more translation details from deepl
 - add a queue for words so when in the middle of the translation an error occurs, the not translated words are processed the next time the program is ran
+
+### CODE:
+- make retrieving words and sending them concurrent:
+- now:
+    - fetch word 1
+    - fetch word 2
+    - send word 1
+    - send word 2
+- wanted:
+    - fetch word 1
+    - send word 1
+    - fetch word 2
+    - send word 2
+
+
+
+### TEST:
+- write unit-tests
+
+### BUILD:
 - add running of tests into Dockerfile
 - add ci pipeline for automated tests?
 

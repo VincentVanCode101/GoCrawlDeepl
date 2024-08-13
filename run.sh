@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+ENV_FILE="$(dirname "$0")/.env"
+
 set -a
-source .env
+source $ENV_FILE
 set +a
 
 CLIPBOARD_CONTENT=$(xclip -selection clipboard -o)
