@@ -5,7 +5,7 @@
 - add a queue for words so when in the middle of the translation an error occurs, the not translated words are processed the next time the program is ran
 
 ### CODE:
-- make retrieving words and sending them concurrent:
+- make scraping words and sending them concurrent:
 - now:
     - fetch word 1
     - fetch word 2
@@ -18,7 +18,10 @@
     - send word 2
 
 - get Jaco to rewrite the program in rust to make it faster
-- get Esa to rewrite the program in c++ to make it unsafe
+- get Esa to rewrite the program in c to make it unsafe
+
+- main.go should only have the main(){}, remove all other functions
+- restructure project setup? -> (https://www.youtube.com/watch?v=dxPakeBsgl4) (https://www.youtube.com/watch?v=1ZbQS6pOlSQ)
 
 ### TEST:
 - write unit-tests

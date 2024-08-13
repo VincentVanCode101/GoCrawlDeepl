@@ -138,6 +138,7 @@ OS: Ubuntu 22.04.4 LTS x86_64
 
 - idk if xclip if available on windows
 - idk if xclip if available on MacOS, I think it can be installed... i could just change the `run.sh` and remove the xclip-call, but I do not want to because my i3wm bind command would get cluttered ;)
+... okay i changed my mind and will do it
 
 
 # Note for future Chris that still uses i3:
