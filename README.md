@@ -125,4 +125,3 @@ The run script will fetch the content of your clip board and run its translation
 ```
 bindsym $mod+Ctrl+P exec --no-startup-id /home/christoph/projects/GoCrawlDeepl/run.sh
 ```
-
