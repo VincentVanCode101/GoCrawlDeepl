@@ -96,8 +96,7 @@ docker exec -it goCrawlDevtainer bash
 - To run the unit-tests manualy:
 ```bash
 docker exec -it goCrawlDevtainer bash
-cd test
-./goRunMyTest.sh
+make test
 ```
 aftert that? Go visit 
 ```bash
@@ -108,11 +107,7 @@ localhost:8080
 ### Development - Run the Application:
 Inside the container, run one of the following commands to start the translation:
 ```bash
-go run main.go "word to translate"
-```
-or
-```bash
-/usr/local/bin/run-app "word to translate"
+make run ARGS="word to translate"
 ```
 ### Production
 #### Build the Production Container:

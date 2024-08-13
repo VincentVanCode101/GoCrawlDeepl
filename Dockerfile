@@ -21,7 +21,7 @@ RUN go mod download && go mod verify
 COPY ./app .
 
 # Build the application
-RUN go build -v -o /usr/local/bin/run-app ./main.go
+RUN make build
 
 # run-app stage
 FROM debian:bookworm as run-app
@@ -47,7 +47,7 @@ RUN apt-get update && apt-get install -y \
     update-ca-certificates
 
 # Copy the built application from the dev stage
-COPY --from=dev /usr/local/bin/run-app /usr/local/bin/run-app
+COPY --from=dev /usr/src/app/run-app /usr/local/bin/run-app
 
 # Copy Google Chrome and its dependencies from the dev stage
 COPY --from=dev /opt/google/chrome /opt/google/chrome

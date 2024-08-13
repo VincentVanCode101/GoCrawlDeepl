@@ -13,7 +13,7 @@ func main() {
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		data, err := os.ReadFile("coverage/coverage.html")
+		data, err := os.ReadFile("test_coverage/coverage.html")
 		if err != nil {
 
 			log.Printf("Error reading HTML file: %v", err)

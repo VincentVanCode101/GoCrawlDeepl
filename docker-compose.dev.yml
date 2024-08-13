@@ -22,7 +22,7 @@ services:
     build:
       context: ./app_for_test_display
     volumes:
-      - ./app/test/coverage/:/coverage
+      - ./app/test_coverage/:/test_coverage
     ports:
       - 8080:8080
     environment:

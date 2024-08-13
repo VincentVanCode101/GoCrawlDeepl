@@ -1,8 +1,8 @@
 .env
 
 # coverage/*
-/app/test/coverage/*
-!/app/test/coverage/.gitignore
+/app/test_coverage/*
+!/app/test_coverage/.gitignore
 
 # Ignore compiled Go binaries
 *.exe
