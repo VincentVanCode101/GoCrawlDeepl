@@ -3,3 +3,9 @@
 # coverage/*
 /app/test/coverage/*
 !/app/test/coverage/.gitignore
+
+# Ignore compiled Go binaries
+*.exe
+*.bin
+/run-app
+app/run-app
