@@ -37,3 +37,5 @@ Volume-mounting: ```- Makefile:/usr/src/app/Makefile``` works to get it into the
 but then an empty Makefile is created on my machine (*/app/Makefile*)... which is a problem
 
     - possible fix? Create a symlink from ./Makefile to ./app/Makefile ? ... does not feel correct -> ask Dockerexpert for help
+
+- stop commiting to main
