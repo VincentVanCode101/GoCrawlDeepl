@@ -9,7 +9,6 @@ import (
 
 func buildChromeOptions(headless, disableGPU, startMaximized bool) []chromedp.ExecAllocatorOption {
 	options := []chromedp.ExecAllocatorOption{
-		chromedp.ExecPath("/usr/bin/google-chrome"),
 		chromedp.Flag("headless", headless),
 		chromedp.Flag("disable-gpu", disableGPU),
 		chromedp.Flag("start-maximized", startMaximized),

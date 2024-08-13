@@ -4,7 +4,7 @@ services:
     image: crawl-deepl:dev
     build: 
       context: .
-      target: build
+      target: dev
     volumes:
       - ./app:/usr/src/app
     environment:
