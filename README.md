@@ -120,6 +120,26 @@ make run ARGS="word to translate"
 ```
 The run script will fetch the content of your clip board and run its translation.
 
+# Notes
+```
+docker version
+```
+
+Docker version 26.0.1, build d260a54
+
+```
+xclip -version
+```
+xclip version 0.13
+Copyright (C) 2001-2008 Kim Saunders et al.
+Distributed under the terms of the GNU GPL
+
+OS: Ubuntu 22.04.4 LTS x86_64
+
+- idk if xclip if available on windows
+- idk if xclip if available on MacOS, I think it can be installed... i could just change the `run.sh` and remove the xclip-call, but I do not want to because my i3wm bind command would get cluttered ;)
+
+
 # Note for future Chris that still uses i3:
 
 ```
