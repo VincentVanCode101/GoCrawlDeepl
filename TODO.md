@@ -17,10 +17,13 @@
     - fetch word 2
     - send word 2
 
-
+- get Jaco to rewrite the program in rust to make it faster
+- get Esa to rewrite the program in c++ to make it unsafe
 
 ### TEST:
 - write unit-tests
+- test against live-deepl system? or just create mock-server
+- save xyz.go file -> run main_test.go and xyz_test.go files -> just like quarkus-auto tests 
 
 ### BUILD:
 - add running of tests into Dockerfile
