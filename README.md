@@ -2,12 +2,12 @@
 - The `crawl/deepl` project is a Go-based application (`go 1.22.0`) designed to translate the contents of your current clipboard-storage using Deepl's web interface from [your desired language to another desired language](#setup-desired-languages-in-an-env-file) and optionally send the translations via a [Telegram bot](#setup-telegram-bot).
 - The application leverages Docker to ensure a consistent and isolated environment for development and execution.
 - It serves as a project for me to learn the Golang programming language. Feel free to give feedback or open pull requests.
-- This app only works as intended if you have xclip installed [look here](#requirements), which mostly only will be linux
+- This app only works as intended if you have xclip installed [(look here)](#requirements), which mostly only will be linux
     - To run it on MacOS or Windows [have a look at the stuff here](#macos-and-windows)
 
 ## Current Setup
-### How It Works
-- **Starting the application**: The application is run in a [docker container](#docker-setup), when starting it the current clipboard-contents is retrieved and passed as an argument which is to be translated
+### How It Works Inside
+- **Starting the application**: The application is run in a [docker container](#docker-setup), when starting it the current clipboard-contents is retrieved and passed as an argument to the go-app which is than to be translated.
 - **Initialization**: The application first checks for an active internet connection.
 - **Chrome Context**: A Chrome context is created to allow headless browsing.
 - **Translation**: The text is translated by navigating to the Deepl website and extracting the translated text using Chromedp.
@@ -15,33 +15,34 @@
 
 ### How it looks
 ##### 1. Case
-- Lets say I copy
+- Lets say I copy this into my clipboard and start the app:
 ```bash
 aforementioned
 ```
-*The Telegram bot*:
-
-![telegrambot.jpg](docs/singlephrase_telegrambot.jpg)
 
 *The The Standart output*:
 
 ![stdout.jpg](docs/singlephrase_stdout.jpg)
 
+*The Telegram bot*:
+
+![telegrambot.jpg](docs/singlephrase_telegrambot.jpg)
+
 ##### 2. Case
-- Lets say I copy
+- Lets say I copy this into my clipboard and start the app:
 ```bash
 aforementioned
 impeccable
 ```
 ... phrases separated by a linebreak
 
-*The Telegram bot*:
-
-![alt text](docs/twophrases_telegrambot.jpg)
-
 *The The Standart output*:
 
 ![alt text](docs/twophrases_stdout.jpg)
+
+*The Telegram bot*:
+
+![alt text](docs/twophrases_telegrambot.jpg)
 
 The phrases are split at the linebreaks and are translated separately
 
@@ -56,7 +57,7 @@ TO_LANGUAGE=
 
 ### Requirements
 - Docker: Ensure Docker is installed on your system. [Docker Documentation.](https://docs.docker.com/get-docker/)
-- Xclip: Ensure the Xclip utility is installed on your system. [xclip](https://wiki.ubuntuusers.de/xclip/)
+- Xclip: Ensure the Xclip utility is installed on your system. [xclip](https://wiki.ubuntuusers.de/xclip/) [(or see this)](#macos-and-windows)
 
 ### Setup Telegram bot
 1. Get your Bot-Token and Chat-ID: https://core.telegram.org/bots
@@ -123,20 +124,23 @@ make run ARGS="word to translate"
 The run script will fetch the content of your clip board and run its translation.
 
 # Notes
-```
-docker version
-```
+I developed this with:
+
+`Docker:`
 
 Docker version 26.0.1, build d260a54
 
-```
-xclip -version
-```
+`Xclip:`
+
 xclip version 0.13
+
 Copyright (C) 2001-2008 Kim Saunders et al.
+
 Distributed under the terms of the GNU GPL
 
-OS: Ubuntu 22.04.4 LTS x86_64
+`OS:`
+
+Ubuntu 22.04.4 LTS x86_64
 
 # MacOS and Windows
 - When not running this on linux but MacOS or Windows the functionality differs slightly
@@ -150,7 +154,7 @@ OS: Ubuntu 22.04.4 LTS x86_64
 ```bash
 runWithOutXclip.bat "word to translate"
 ```
-this bat-script is written by Chat-GPT since I have to clue amount .bat scripts and no way of testing them (just get yourself a unix-based OS and be happy)
+this bat-script is written by Chat-GPT since I have to clue about `.bat` scripts and no way of testing them (just get yourself a unix-based OS and be happy)
 
 
 # Note for future Chris that still uses i3:
