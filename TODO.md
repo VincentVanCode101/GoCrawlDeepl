@@ -20,6 +20,7 @@
 
 - ❌ get Jaco to rewrite the program in rust to make it faster
 - ⛔ get Esa to rewrite the program in c to make it unsafe
+    - but he said maybe he will do it in: https://www.emojicode.org/
 - 🔨 main.go should only have the main(){}, remove all other functions
 - 🔨 restructure project setup? -> (https://www.youtube.com/watch?v=dxPakeBsgl4) (https://www.youtube.com/watch?v=1ZbQS6pOlSQ)
 
