@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"strings"
 	"time"
 
@@ -54,12 +55,18 @@ func main() {
 		log.Fatalf("Failed to establish an internet connection: %v", err)
 	}
 
-	chromeCtx, cancelChrome, cancelExecAllocator, err := browser.GetChromeContext()
+	keepBrowserOpen := os.Getenv("KEEP_BROWSER_OPEN") == "true"
+	chromeCtx, cancelChrome, cancelExecAllocator, err := browser.GetChromeContext(!keepBrowserOpen)
 	if err != nil {
 		log.Fatalf("Failed to initialize Chrome context: %v", err)
 	}
-	defer cancelExecAllocator()
-	defer cancelChrome()
+
+	defer func() {
+		if !keepBrowserOpen {
+			cancelExecAllocator()
+			cancelChrome()
+		}
+	}()
 
 	bot, chatID, err := telegrambot.SetupTelegramBot()
 	if err != nil {
@@ -77,7 +84,15 @@ func main() {
 		handleTranslation(chromeCtx, toBeTranslatedPhrase, fromLang, toLang, telegramBot)
 	}
 
-	fmt.Printf("Total execution time of the program: %v\n\n", time.Since(totalExecTime))
+	fmt.Printf("Total rxecution time of the program: %v\n\n", time.Since(totalExecTime))
+
+	if keepBrowserOpen {
+		fmt.Println("Press 'Enter' to close the browser...")
+		fmt.Scanln()
+
+		cancelExecAllocator()
+		cancelChrome()
+	}
 }
 
 func handleTranslation(chromeCtx context.Context, toBeTranslatedPhrase string, fromLang string, toLang string, telegrambot *TelegramBot) {

@@ -26,8 +26,8 @@ func getChromeExecAllocatorContext(opts []chromedp.ExecAllocatorOption) (context
 }
 
 // GetChromeContext initializes and returns a Chrome browser context for web scraping.
-func GetChromeContext() (context.Context, context.CancelFunc, context.CancelFunc, error) {
-	opts := buildChromeOptions(true, true, true)
+func GetChromeContext(headless bool) (context.Context, context.CancelFunc, context.CancelFunc, error) {
+	opts := buildChromeOptions(headless, true, true)
 	execAllocCtx, cancelExecAllocator, err := getChromeExecAllocatorContext(opts)
 	if err != nil {
 		return nil, nil, nil, err

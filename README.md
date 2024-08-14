@@ -112,6 +112,24 @@ Inside the container, run one of the following commands to start the translation
 ```bash
 make run ARGS="word to translate"
 ```
+#### Keeping the Browser Open During Development
+
+- If you need to keep the browser open for debugging or manual inspection, you can set the `KEEP_BROWSER_OPEN` environment variable to true. This will start the Chrome browser in non-headless mode and keep it open until you press 'Enter' in the terminal.
+
+1. Add the following line to your .env file:
+```bash
+KEEP_BROWSER_OPEN=true
+```
+2. When the container is started with `KEEP_BROWSER_OPEN=true`, you can:
+
+##### Connect to the Container via VNC
+- You can connect to the running container via VNC to interact with the browser visually. The VNC server is exposed on port 5920. Use a VNC viewer to connect to the following address:
+
+```bash
+172.28.0.4:5920
+```
+
+
 ### Production
 #### Build the Production Container:
 ```bash

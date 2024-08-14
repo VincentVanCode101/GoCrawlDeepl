@@ -3,7 +3,8 @@
 - ❌ extract XPath into seperate file becaus its likly to change from time to time
 - 🔨 extract ```less common``` words and more translation details from deepl
 - ❌ add a queue for words so when in the middle of the translation an error occurs, the not translated words are processed the next time the program is ran
-- ❌ add a timeout to the chromebrowser (e.g. after 5s of no connections, exit the programm)
+- ✅ add a timeout to the chromebrowser (e.g. after 5s of no connections, exit the programm)
+- add posibility to connect to container via vnc to see open chrome browser (add env-var which controlls if browser is kept open)
 
 ### CODE:
 - 🔨 make scraping words and sending them concurrent:
@@ -31,7 +32,8 @@
 
 ### BUILD:
 - ✅ add running of tests into Dockerfile
-- 🔨 add ci pipeline for automated tests?
+- ❌ add ci pipeline for automated tests?
+- ❌ add env var to controlle the size of the browser when viewed with VNC (currently: 3840x2160x16 in the dev-entrypoint.sh)
 
 - 🔨 get Makefile out of /app directory:
     - Problem: copying the ```./Makefile``` into the container works just fine,

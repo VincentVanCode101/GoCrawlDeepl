@@ -6,10 +6,10 @@ FROM ${APP_BASE_IMAGE} as dev
 
 WORKDIR /usr/src/app
 
-# Install Google Chrome and necessary dependencies
+# Install Google Chrome, VNC, and necessary dependencies
 RUN curl -o /tmp/google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
     apt-get update && \
-    apt-get install -y /tmp/google-chrome.deb
+    apt-get install -y /tmp/google-chrome.deb x11vnc xvfb dbus
 
 # Copy Go modules files
 COPY ./app/go.mod ./app/go.sum ./
@@ -25,6 +25,12 @@ RUN make test
 
 # Build the application
 RUN make build
+
+# Copy the entrypoint script for the dev stage
+COPY dev-entrypoint.sh /usr/local/bin/dev-entrypoint.sh
+
+# Make the entrypoint script executable
+RUN chmod +x /usr/local/bin/dev-entrypoint.sh
 
 # run-app stage
 FROM debian:bookworm as run-app
@@ -45,9 +51,7 @@ RUN apt-get update && apt-get install -y \
     libxcomposite1 \
     libxdamage1 \
     libxrandr2 \
-    xdg-utils \
-    wget && \
-    update-ca-certificates
+    xdg-utils
 
 # Copy the built application from the dev stage
 COPY --from=dev /usr/src/app/run-app /usr/local/bin/run-app
@@ -63,7 +67,7 @@ RUN ln -sf /opt/google/chrome/google-chrome /usr/bin/google-chrome && \
     ln -sf /opt/google/chrome/google-chrome /etc/alternatives/gnome-www-browser && \
     ln -sf /opt/google/chrome/google-chrome /etc/alternatives/x-www-browser
 
-# Copy the entrypoint script
+# Copy the entrypoint script for the run-app stage
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Make the entrypoint script executable

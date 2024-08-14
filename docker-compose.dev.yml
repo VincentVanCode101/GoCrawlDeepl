@@ -2,11 +2,11 @@ services:
   goCrawlDeeplDev:
     container_name: goCrawlDevtainer
     image: crawl-deepl:dev
-    build: 
+    build:
       context: .
       target: dev
     volumes:
-      
+      - ./app:/usr/src/app
       - go-build-cache:/root/.cache/go-build
       - go-modules:/go/pkg/mod
     environment:
@@ -14,19 +14,26 @@ services:
       CHAT_ID: ${CHAT_ID}
       FROM_LANGUAGE: ${FROM_LANGUAGE}
       TO_LANGUAGE: ${TO_LANGUAGE}
-    entrypoint: ["/bin/bash", "-c"]
+      KEEP_BROWSER_OPEN: ${KEEP_BROWSER_OPEN:-false}
+    entrypoint: ["/usr/local/bin/dev-entrypoint.sh"]
     command: [
-      "make test && tail -f /dev/null"
+      "sh", "-c", "make test && tail -f /dev/null"
     ]
     # the tests are executed in the docker-compose.dev.yml again, after they have
     # just been executed in the Dockerfile to build this dev-container, because
-    # the - ./app:/usr/src/app volume-mount happens after the building of the image
-    # and because the test_coverage directory is empty/non-existent in the host
+    # the - ./app:/usr/src/app volume-mounting happens after the building of the
+    # image and because the test_coverage directory is empty/non-existent in the host
     # the test_coverage inside the container is overriden with "an empty directory"
     # 
-    # So to have the test_coverage filled with the test coverages for the below
+    # so to have the test_coverage filled with the test coverages for the below
     # defined WebServer to serve the data after starting the container up, the
     # tests have to be executed again
+    ports:
+      - 5920:5920  # VNC port
+    networks:
+      go-crawl-deepl-network:
+        ipv4_address: 172.28.0.4
+
 
   webServer:
     container_name: webServerDevtainer
@@ -39,6 +46,18 @@ services:
       - 8080:8080
     environment:
       PORT: 8080
+    networks:
+      go-crawl-deepl-network:
+        ipv4_address: 172.28.0.5
+
+networks:
+  go-crawl-deepl-network:
+    name: go-crawl-deepl-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+          gateway: 172.28.0.1
 
 volumes:
   go-build-cache:
