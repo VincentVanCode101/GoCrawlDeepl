@@ -20,6 +20,9 @@ RUN go mod download && go mod verify
 # Copy application source code
 COPY ./app .
 
+# Test the application
+RUN make test
+
 # Build the application
 RUN make build
 

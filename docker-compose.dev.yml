@@ -6,7 +6,7 @@ services:
       context: .
       target: dev
     volumes:
-      - ./app:/usr/src/app
+      
       - go-build-cache:/root/.cache/go-build
       - go-modules:/go/pkg/mod
     environment:
@@ -14,7 +14,19 @@ services:
       CHAT_ID: ${CHAT_ID}
       FROM_LANGUAGE: ${FROM_LANGUAGE}
       TO_LANGUAGE: ${TO_LANGUAGE}
-    entrypoint: ["tail", "-f", "/dev/null"]
+    entrypoint: ["/bin/bash", "-c"]
+    command: [
+      "make test && tail -f /dev/null"
+    ]
+    # the tests are executed in the docker-compose.dev.yml again, after they have
+    # just been executed in the Dockerfile to build this dev-container, because
+    # the - ./app:/usr/src/app volume-mount happens after the building of the image
+    # and because the test_coverage directory is empty/non-existent in the host
+    # the test_coverage inside the container is overriden with "an empty directory"
+    # 
+    # So to have the test_coverage filled with the test coverages for the below
+    # defined WebServer to serve the data after starting the container up, the
+    # tests have to be executed again
 
   webServer:
     container_name: webServerDevtainer

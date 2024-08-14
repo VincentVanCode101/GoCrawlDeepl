@@ -21,6 +21,7 @@ test:
 	mkdir -p test_coverage
 	go test ./... -coverprofile=test_coverage/test.out
 	go tool cover -html=./test_coverage/test.out -o test_coverage/coverage.html
+	@echo "Finished running tests..."
 
 # Clean up build files
 clean:
