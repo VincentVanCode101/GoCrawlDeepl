@@ -19,7 +19,7 @@
         - send word 2
 
 - ❌ get Jaco to rewrite the program in rust to make it faster
-- ❌ get Esa to rewrite the program in c to make it unsafe
+- ⛔ get Esa to rewrite the program in c to make it unsafe
 - 🔨 main.go should only have the main(){}, remove all other functions
 - 🔨 restructure project setup? -> (https://www.youtube.com/watch?v=dxPakeBsgl4) (https://www.youtube.com/watch?v=1ZbQS6pOlSQ)
 
@@ -50,4 +50,4 @@ but then an empty Makefile is created on my machine (*/app/Makefile*)... which i
 
 ❌ = haven't been touchd as off yet
 
-⛔ = Started, but now no intentions of completing
+⛔ = Started, but now no intentions of completing (won't do anymore)
