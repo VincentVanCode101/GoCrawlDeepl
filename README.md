@@ -183,9 +183,9 @@ Ubuntu 22.04.4 LTS x86_64
 (this assumes you have no xclip installed, otherwise you can just call `./run.sh` and your clipboard contents will be translated)
 - On Windows you will have to call
 ```bash
-runWithOutXclip.bat "word to translate"
+./run.bat "word to translate"
 ```
-this bat-script is written by Chat-GPT since I have to clue about `.bat` scripts and no way of testing them (just get yourself a unix-based OS and be happy)
+this bat-script is written by Chat-GPT since I have to clue about `.bat` scripts and no way of testing them either (just get yourself a unix-based OS and be happy)
 
 
 # Note for future Chris that still uses i3:
