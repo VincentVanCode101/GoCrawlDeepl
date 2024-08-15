@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 # Install Google Chrome, VNC, and necessary dependencies
 RUN curl -o /tmp/google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
     apt-get update && \
-    apt-get install -y /tmp/google-chrome.deb x11vnc xvfb dbus
+    apt-get install -y /tmp/google-chrome.deb x11vnc xvfb dbus openbox
 
 # Copy Go modules files
 COPY ./app/go.mod ./app/go.sum ./

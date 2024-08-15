@@ -14,9 +14,13 @@ fi
 echo "Starting dbus-daemon"
 dbus-daemon --config-file=/usr/share/dbus-1/system.conf --print-address &
 echo "Starting Xvfb"
-Xvfb :20 -screen 0 3840x2160x16 &
+Xvfb :20 -screen 0 1920x1080x24 &
 sleep 1
 echo "Xvfb started"
+
+echo "Starting openbox"
+openbox &
+
 x11vnc -display :20 -N -forever -bg -o "/tmp/x11vnc.log"
 sleep 1
 echo "x11vnc started"
