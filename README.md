@@ -90,6 +90,19 @@ docker compose -f docker-compose.dev.yml build
 ```bash
 docker compose -f docker-compose.dev.yml up
 ```
+- In case you encounter a
+```bash
+Error response from daemon: Pool overlaps with other one on this address space
+```
+
+- this means the ip-subnet defined in the `docker-compose.dev.yml` overlaps with the address pool of an existing docker network on your machine
+- since networks need no time to build again, I just execute
+
+```bash
+docker network prune
+```
+-  and run `docker compose -f docker-compose.dev.yml` again, which solves the problem (when i now I do not have any other docker-network in another project configured with this ip-address pool)
+
 ##### Connect to the Development Container:
 ```bash
 docker exec -it goCrawlDevtainer bash
