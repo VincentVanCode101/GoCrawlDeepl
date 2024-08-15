@@ -1,7 +1,4 @@
 #!/bin/bash
-make test
-
-export DISPLAY=:20
 
 # Clean up any existing X server or DBus daemon
 if [ -e /tmp/.X20-lock ]; then

@@ -15,6 +15,7 @@ services:
       FROM_LANGUAGE: ${FROM_LANGUAGE}
       TO_LANGUAGE: ${TO_LANGUAGE}
       KEEP_BROWSER_OPEN: ${KEEP_BROWSER_OPEN:-false}
+      DISPLAY: ":20"
     entrypoint: ["/usr/local/bin/dev-entrypoint.sh"]
     command: [
       "sh", "-c", "make test && tail -f /dev/null"
