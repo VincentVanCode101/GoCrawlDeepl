@@ -7,17 +7,17 @@ import (
 	"os"
 	"strings"
 	"time"
-	"unicode"
 
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/chromedp"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 
 	"crawl/deepl/utils/browser"
 	"crawl/deepl/utils/cliargs"
 	"crawl/deepl/utils/envutil"
+	"crawl/deepl/utils/messaging"
 	"crawl/deepl/utils/network"
-	"crawl/deepl/utils/telegrambot"
+	"crawl/deepl/utils/telegram"
+	"crawl/deepl/utils/text"
 	"crawl/deepl/utils/url"
 )
 
@@ -35,10 +35,10 @@ type Translation struct {
 }
 
 // TelegramBot encapsulates the details needed to interact with the Telegram bot API.
-type TelegramBot struct {
-	Bot    *tgbotapi.BotAPI
-	ChatID int64
-}
+// type TelegramBot struct {
+// 	Bot    *tgbotapi.BotAPI
+// 	ChatID int64
+// }
 
 func main() {
 	totalExecTime := time.Now()
@@ -51,8 +51,15 @@ func main() {
 	chromeCtx, cancelChrome := setupBrowser()
 	defer cancelChrome()
 
-	telegramBot := setupTelegramBot()
-
+	telegramBot, err := telegram.SetupTelegramBot()
+	if err != nil {
+		log.Printf("Failed to initialize Telegram bot: %v", err)
+		return
+	}
+	if telegramBot == nil {
+		log.Println("Telegram bot is not initialized, proceeding without Telegram bot.")
+		return
+	}
 	processTranslations(chromeCtx, fromLang, toLang, toBeTranslatedPhrases, telegramBot)
 
 	fmt.Printf("Total execution time of the program: %v\n\n", time.Since(totalExecTime))
@@ -99,29 +106,9 @@ func setupBrowser() (context.Context, func()) {
 	return chromeCtx, cancelFunc
 }
 
-func setupTelegramBot() *TelegramBot {
-	bot, chatID, err := telegrambot.SetupTelegramBot()
-	if err != nil {
-		log.Printf("Failed to initialize Telegram bot: %v", err)
-		return nil
-	}
-
-	return &TelegramBot{Bot: bot, ChatID: chatID}
-}
-
-// Move to string_util.go ?
-func containsWhitespace(phrase string) bool {
-	for _, char := range phrase {
-		if unicode.IsSpace(char) {
-			return true
-		}
-	}
-	return false
-}
-
-func processTranslations(ctx context.Context, fromLang, toLang string, phrases []string, telegramBot *TelegramBot) {
+func processTranslations(ctx context.Context, fromLang, toLang string, phrases []string, telegramBot *telegram.TelegramBot) {
 	for _, phrase := range phrases {
-		fetchType := !containsWhitespace(phrase)
+		fetchType := !text.ContainsWhitespace(phrase)
 		// Fetch the word type only if the phrase has no spaces or tabs.
 		// This avoids incorrect types for noun phrases (e.g., "flying banana"),
 		// which Deepl doesn't handle well. Compound nouns like "car door"
@@ -129,7 +116,10 @@ func processTranslations(ctx context.Context, fromLang, toLang string, phrases [
 		// is a limitation we accept.
 
 		translation := translatePhrase(ctx, phrase, fromLang, toLang, fetchType)
-		outputTranslation(translation, telegramBot)
+
+		text := text.FormatTranslation(translation.Phrase, translation.Translations)
+
+		messaging.OutputTranslation(telegramBot, text)
 	}
 }
 
@@ -193,35 +183,6 @@ func extractTextFromNodes(ctx context.Context, nodes []*cdp.Node) string {
 		texts = append(texts, text)
 	}
 	return strings.Join(texts, " ")
-}
-
-func formatTranslation(phrase string, translations map[string]string) string {
-
-	translationText := fmt.Sprintf("Input:\n%s\n\nMain translation:\n%s", phrase, translations["mainTranslations"])
-
-	if typeOfWord, ok := translations["typeOfToBeTranslatedWord"]; ok {
-		translationText = fmt.Sprintf("Input:\n%s (%s)\n\nMain translation:\n%s", phrase, typeOfWord, translations["mainTranslations"])
-	}
-	return translationText
-}
-
-func outputTranslation(translation Translation, telegramBot *TelegramBot) {
-	text := formatTranslation(translation.Phrase, translation.Translations)
-
-	if telegramBot != nil {
-		sendTelegramMessage(telegramBot, text)
-	}
-
-	fmt.Println("---------------------------------")
-	fmt.Println(text)
-	fmt.Println("---------------------------------")
-}
-
-func sendTelegramMessage(telegramBot *TelegramBot, text string) {
-	msg := tgbotapi.NewMessage(telegramBot.ChatID, text)
-	if _, err := telegramBot.Bot.Send(msg); err != nil {
-		log.Printf("Failed to send message via Telegram bot: %v", err)
-	}
 }
 
 func waitForBrowserClosure() {

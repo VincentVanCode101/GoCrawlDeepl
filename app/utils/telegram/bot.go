@@ -1,7 +1,6 @@
-package telegrambot
+package telegram
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -9,29 +8,37 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
+// TelegramBot encapsulates the details needed to interact with the Telegram bot API.
+type TelegramBot struct {
+	Bot    *tgbotapi.BotAPI
+	ChatID int64
+}
+
 // SetupTelegramBot initializes and configures a new Telegram bot.
-func SetupTelegramBot() (*tgbotapi.BotAPI, int64, error) {
+func SetupTelegramBot() (*TelegramBot, error) {
 	botToken, isPresent := os.LookupEnv("BOT_TOKEN")
 	if !isPresent || botToken == "" {
 		log.Println("No environment variable for BOT_TOKEN found. Telegram bot will not be used.")
-		return nil, 0, nil
+		return nil, nil
 	}
 
 	chatIDStr, isPresent := os.LookupEnv("CHAT_ID")
 	if !isPresent || chatIDStr == "" {
 		log.Println("No environment variable for CHAT_ID found. Telegram bot will not be used.")
-		return nil, 0, nil
+		return nil, nil
 	}
 
 	chatID, err := strconv.ParseInt(chatIDStr, 10, 64)
 	if err != nil {
-		return nil, 0, fmt.Errorf("error converting CHAT_ID to int64: %v", err)
+		log.Printf("Error converting CHAT_ID to int64: %v", err)
+		return nil, err
 	}
 
 	bot, err := tgbotapi.NewBotAPI(botToken)
 	if err != nil {
-		return nil, 0, fmt.Errorf("failed to create bot: %v", err)
+		log.Printf("Failed to create bot: %v", err)
+		return nil, err
 	}
 
-	return bot, chatID, nil
+	return &TelegramBot{Bot: bot, ChatID: chatID}, nil
 }
