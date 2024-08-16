@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 	"time"
+	"unicode"
 
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/chromedp"
@@ -108,20 +109,24 @@ func setupTelegramBot() *TelegramBot {
 	return &TelegramBot{Bot: bot, ChatID: chatID}
 }
 
+// Move to string_util.go ?
+func containsWhitespace(phrase string) bool {
+	for _, char := range phrase {
+		if unicode.IsSpace(char) {
+			return true
+		}
+	}
+	return false
+}
+
 func processTranslations(ctx context.Context, fromLang, toLang string, phrases []string, telegramBot *TelegramBot) {
 	for _, phrase := range phrases {
-		fetchType := !strings.ContainsAny(phrase, " \t")
-		// When a word contains no whitespaces or tabs, we get the type of the word aswell,
-		// otherwise we can't be sure if it is a compound noun (e.g. car door) (where fetching
-		// the type would make sense) or if it is a noun phrase (e.g. flying banana ->
-		// which consists of a verb (or participle) "flying", which is used as an adjective,
-		// modifying the noun "banana"), where deepl doesnt show the type. And trying to fetch
-		// the type of a noun phrase does not work (the crawler outputs random types which do
-		// not represent acurate types)
-
-		// Since I cant think of a better way to distinguish between a compound noun ('car door')
-		// and a noun phrase ('flying banana') I only fetch the type if the word is a single word
-		// accapting that deepl shows the type of "car door" which I do not fetch :(
+		fetchType := !containsWhitespace(phrase)
+		// Fetch the word type only if the phrase has no spaces or tabs.
+		// This avoids incorrect types for noun phrases (e.g., "flying banana"),
+		// which Deepl doesn't handle well. Compound nouns like "car door"
+		// also won't have their type fetched (even if we could), but this
+		// is a limitation we accept.
 
 		translation := translatePhrase(ctx, phrase, fromLang, toLang, fetchType)
 		outputTranslation(translation, telegramBot)
@@ -191,7 +196,9 @@ func extractTextFromNodes(ctx context.Context, nodes []*cdp.Node) string {
 }
 
 func formatTranslation(phrase string, translations map[string]string) string {
+
 	translationText := fmt.Sprintf("Input:\n%s\n\nMain translation:\n%s", phrase, translations["mainTranslations"])
+
 	if typeOfWord, ok := translations["typeOfToBeTranslatedWord"]; ok {
 		translationText = fmt.Sprintf("Input:\n%s (%s)\n\nMain translation:\n%s", phrase, typeOfWord, translations["mainTranslations"])
 	}
