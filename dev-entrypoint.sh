@@ -12,7 +12,8 @@ if [ -e /run/dbus/pid ]; then
 fi
 
 echo "Starting dbus-daemon"
-dbus-daemon --config-file=/usr/share/dbus-1/system.conf --print-address &
+dbus-daemon --config-file=/usr/share/dbus-1/system.conf --print-address > /tmp/dbus.log &
+
 echo "Starting Xvfb"
 Xvfb :20 -screen 0 1920x1080x24 &
 sleep 1
