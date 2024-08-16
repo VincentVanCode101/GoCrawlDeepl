@@ -120,12 +120,12 @@ localhost:8080
 ```
  where the `webServerDevtainer` has spun up a simple webserver, serving the current test coverages
 
-### Development - Run the Application:
+### Development - Run the application:
 Inside the container, run one of the following commands to start the translation:
 ```bash
 make run ARGS="word to translate"
 ```
-#### Keeping the Browser Open During Development
+#### Keeping the browser open during development
 
 - If you need to keep the browser open for debugging or manual inspection, you can set the `KEEP_BROWSER_OPEN` environment variable to true. This will start the Chrome browser in non-headless mode and keep it open until you press 'Enter' in the terminal.
 
