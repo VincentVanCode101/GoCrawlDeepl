@@ -110,7 +110,19 @@ func setupTelegramBot() *TelegramBot {
 
 func processTranslations(ctx context.Context, fromLang, toLang string, phrases []string, telegramBot *TelegramBot) {
 	for _, phrase := range phrases {
-		fetchType := !strings.ContainsAny(phrase, " ")
+		fetchType := !strings.ContainsAny(phrase, " \t")
+		// When a word contains no whitespaces or tabs, we get the type of the word aswell,
+		// otherwise we can't be sure if it is a compound noun (e.g. car door) (where fetching
+		// the type would make sense) or if it is a noun phrase (e.g. flying banana ->
+		// which consists of a verb (or participle) "flying", which is used as an adjective,
+		// modifying the noun "banana"), where deepl doesnt show the type. And trying to fetch
+		// the type of a noun phrase does not work (the crawler outputs random types which do
+		// not represent acurate types)
+
+		// Since I cant think of a better way to distinguish between a compound noun ('car door')
+		// and a noun phrase ('flying banana') I only fetch the type if the word is a single word
+		// accapting that deepl shows the type of "car door" which I do not fetch :(
+
 		translation := translatePhrase(ctx, phrase, fromLang, toLang, fetchType)
 		outputTranslation(translation, telegramBot)
 	}
